@@ -1,13 +1,17 @@
-03 - Video Input Basics
+03 - Video Input Basics (Video Only)
 
-Goal: Read frames from a camera OR a video file and display them.
+Goal: Play a video file and display frames (no camera, no arguments).
 
 What you learn
-- VideoCapture with camera index or file path
-- Basic CLI argument usage
-- Loop + display pipeline
+- VideoCapture (with a video file)
+- read()
+- imshow()
+- waitKey()
+- release()
 
 How to run
 python main.py
-python main.py --source sample.mp4
-python main.py --source 0
+
+Notes
+- Put a video file named "sample.mp4" in this folder.
+- Press "q" to quit.
