@@ -1,3 +1,5 @@
+# Camera basics tutorial entrypoint
+
 import cv2
 
 
