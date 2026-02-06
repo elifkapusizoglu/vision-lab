@@ -1,56 +1,55 @@
 import cv2
+import time
+
+#open default camera
+
+camera=cv2.VideoCapture(0)
+
+if not camera.isOpened():
+    print("ERROR, Camera could not be opened..!")
+    exit()
 
 
-def main(camera_index: int=0) -> None:
-    """
-        Beginner friendly camera viewer.
+#store time of previous frame
+ previous_time= time.time()
 
-        Controls: 
-        -Press "q" to quit
+while True:
+    #Read from the camera
+    ret, frame=camera.read()
+    if not ret:
+        break
 
-        Tips:
-        - If your camera doesn't open, try camera index=1 or 2.
-    """
-    cap= cv2.VideoCapture(camera_index)
+    # Get current time
+    current_time = time.time()
 
-    #Some wabcams wait a moment; optionals but helps stability.
-    # cap.set(cv2.CAP_PROF_FRAME_WIDTH, 1280)
-    # cap.set(cv2.CAP_PROF_FRAME_HEIGHT, 720)
+    # Calculate time difference between frames
+    delta_time = current_time - previous_time
+    previous_time = current_time
 
-    if not cap.isOpened():
-        print(f"ERROR  Camera could not be opened (index={camera_index})." )
-        print("Try changing the index: 0 --> 1 or 2")
-        return
-    window_name="Camera Basics(press q to quit)"
-    cv2.namedWindow(window_name,cv2.WINDOW_NORMAL)
+    # Calculate FPS
+    if delta_time > 0:
+        fps = 1 / delta_time
+    else:
+        fps = 0
 
-    try:
-        while True:
-            ret, frame=cap.read()
-            
-            if not ret or frame is None:
-                print("[Error] Frame could not be read from camera")
-                break
+    # Draw FPS text on the frame
+    cv2.putText(
+        frame,
+        f"FPS: {int(fps)}",
+        (20, 40),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1,
+        (0, 255, 0),
+        2
+    )
 
+    # Show frame
+    cv2.imshow("Vision Lab | Basic FPS", frame)
 
-            # Simple overlay for beginners to confirm loop is alive
-            cv2.putText(
-                frame,
-                "press q to quit",
-                (20,30),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.8,
-                (255,255,255),
-                2,
-            )
+    # Exit when 'q' is pressed
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
-            cv2.imshow(window_name,frame)
-            key=cv2.waitKey(1) & 0xFF
-
-            if key == ord("q"):
-                break
-    finally:
-        cap.release()
-        cv2.destroyAllWindows()
-if __name__=="__main__":
-    main()
+# Release resources
+camera.release()
+cv2.destroyAllWindows()
