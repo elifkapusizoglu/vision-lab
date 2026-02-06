@@ -1,3 +1,5 @@
+# Basic FPS overlay (instant FPS)
+
 import cv2
 
 
