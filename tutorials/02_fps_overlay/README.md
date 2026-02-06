@@ -12,3 +12,4 @@ Goal: Open a camera and display live frames.
 ## How to run
 ```bash
 python main.py
+ 
